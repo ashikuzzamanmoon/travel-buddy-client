@@ -47,7 +47,9 @@ const RegisterPage = () => {
   const router = useRouter();
 
   const handleRegister = async (values: FieldValues) => {
-    // console.log(data);
+    values.profile.age = Number(values.profile?.age);
+    console.log(values);
+
     try {
       const res = await registerUser(values);
       console.log(res);
