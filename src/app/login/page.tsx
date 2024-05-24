@@ -11,6 +11,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import TBForm from "@/components/Forms/TBForm";
 import TBInput from "@/components/Forms/TBInput";
+import { userLogin } from "@/services/actions/loginUser";
+import { storeUserInfo } from "@/services/auth.services";
 
 export const validationSchema = z.object({
   email: z.string().email("Please enter a valid email address!"),
@@ -22,7 +24,18 @@ const LoginPage = () => {
   const [error, setError] = useState("");
 
   const handleLogin = async (values: FieldValues) => {
-    // console.log(values);
+    try {
+      const res = await userLogin(values);
+      if (res?.data?.token) {
+        toast.success(res?.message);
+        storeUserInfo({ token: res?.data?.token });
+        router.push("/");
+      } else {
+        setError(res.message);
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
   };
 
   return (
