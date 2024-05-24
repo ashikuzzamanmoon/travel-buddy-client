@@ -52,11 +52,9 @@ const RegisterPage = () => {
 
     try {
       const res = await registerUser(values);
-      console.log(res);
-      console.log("fjkldhjfjkh");
       if (res?.data?.id) {
         toast.success(res?.message);
-        router.push("/login");
+        router.push("/dashboard");
       }
     } catch (err: any) {
       console.error(err.message);
