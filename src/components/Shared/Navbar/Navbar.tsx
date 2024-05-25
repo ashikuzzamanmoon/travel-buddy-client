@@ -12,16 +12,25 @@ import Link from "next/link";
 import { useState } from "react";
 import { useMediaQuery, useTheme } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import useUserInfo from "@/hooks/useUserInfo";
+import { logoutUser } from "@/services/actions/logoutUser";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const userInfo = useUserInfo();
+  console.log(userInfo);
+  const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const handleLogOut = () => {
+    logoutUser(router);
+  };
+
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
   };
-
   return (
     <Container>
       <Stack
@@ -101,9 +110,19 @@ const Navbar = () => {
             <Typography component={Link} href="/my-profile">
               My Profile
             </Typography>
-            <Button component={Link} href="/login">
-              Login
-            </Button>
+            {userInfo?.userId ? (
+              <Button
+                color="error"
+                onClick={handleLogOut}
+                sx={{ boxShadow: 0 }}
+              >
+                Logout
+              </Button>
+            ) : (
+              <Button component={Link} href="/login">
+                Login
+              </Button>
+            )}
           </Stack>
         )}
       </Stack>

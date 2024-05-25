@@ -1,4 +1,5 @@
 import { Avatar, Button } from "@mui/material";
+import Link from "next/link";
 
 const MyProfile = () => {
   return (
@@ -46,9 +47,11 @@ const MyProfile = () => {
               </div>
             </div>
             <div className="flex justify-center mt-4 gap-5">
-              <Button variant="outlined" color="primary" className="mr-4">
-                Edit Profile
-              </Button>
+              <Link href="/dashboard/user/my-profile/edit">
+                <Button variant="outlined" color="primary" className="mr-4">
+                  Edit Profile
+                </Button>
+              </Link>
               <Button variant="outlined" color="primary">
                 Change Password
               </Button>
