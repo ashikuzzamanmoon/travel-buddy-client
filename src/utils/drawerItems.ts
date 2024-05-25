@@ -6,6 +6,8 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
 import RequestPageIcon from "@mui/icons-material/RequestPage";
 import ReviewsIcon from "@mui/icons-material/Reviews";
+import PortraitIcon from "@mui/icons-material/Portrait";
+import CommuteIcon from "@mui/icons-material/Commute";
 
 export const drawerItems = (role: UserRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
@@ -34,9 +36,19 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           icon: DashboardIcon,
         },
         {
+          title: "Post Trip",
+          path: `${role}/post-trip`,
+          icon: CommuteIcon,
+        },
+        {
           title: "Travel Request",
           path: `${role}/travel-request`,
           icon: RequestPageIcon,
+        },
+        {
+          title: "My Profile",
+          path: `${role}/my-profile`,
+          icon: PortraitIcon,
         },
         {
           title: "Reviews",
