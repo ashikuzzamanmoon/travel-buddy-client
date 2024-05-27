@@ -6,35 +6,34 @@ import TBSelectField from "@/components/Forms/TBSelectField";
 import TripDatePicker from "@/components/Forms/TripDatePicker";
 import TBModal from "@/components/Shared/TBModal/TBModal";
 import { TravelType } from "@/contants/travelType";
-import { useCreateTripMutation } from "@/redux/api/tripApi/tripApi";
+import { useCreateTripMutation } from "@/redux/api/tripApi";
 import { dateFormatter } from "@/utils/dateFormatter";
 import { Button, Grid } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
-type TProps = {
+interface PostTripModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const PostTripModal = ({ open, setOpen }: TProps) => {
+}
+const PostTripModal: React.FC<PostTripModalProps> = ({ open, setOpen }) => {
   const [createTrip] = useCreateTripMutation();
+
   const handleSubmit = async (values: FieldValues) => {
-    console.log(values);
+    // console.log(values);
     const toastId = toast.loading("Processing...");
     const formData = new FormData();
     formData.append("image", values?.file as File);
-    let imageData;
+    let imgUrl;
     if (values?.file) {
       const res = await fetch(
         "https://api.imgbb.com/1/upload?key=b8d683c7eb75381b6f1120c04de00683",
         {
           method: "POST",
-
           body: formData,
         }
       );
-      imageData = await res.json();
+      imgUrl = await res.json();
     }
     values.startDate = dateFormatter(values.startDate.$d);
     values.endDate = dateFormatter(values.endDate.$d);
@@ -43,12 +42,12 @@ const PostTripModal = ({ open, setOpen }: TProps) => {
     // console.log(values);
     const tripData = {
       ...values,
-      file: imageData?.data?.url,
+      file: imgUrl?.data?.url,
     };
-    // console.log(tripData);
+    console.log(tripData);
     try {
       const res: any = await createTrip(tripData);
-      // console.log(res);
+      console.log(res);
       if (res?.data?.id) {
         toast.success("Trip created successfully", {
           id: toastId,
@@ -89,9 +88,7 @@ const PostTripModal = ({ open, setOpen }: TProps) => {
           <Grid item md={6}>
             <TBInput name="budget" label="Budget" type="number" />
           </Grid>
-          <Grid item md={6}>
-            <TBInput name="activities" label="Activities" />
-          </Grid>
+
           <Grid item md={6}>
             <TBFileUploader
               name="file"

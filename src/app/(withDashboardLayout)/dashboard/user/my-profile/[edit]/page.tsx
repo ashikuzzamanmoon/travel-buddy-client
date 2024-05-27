@@ -2,9 +2,32 @@
 import TBFileUploader from "@/components/Forms/TBFileUploader";
 import TBForm from "@/components/Forms/TBForm";
 import TBInput from "@/components/Forms/TBInput";
+import { useEditProfileMutation } from "@/redux/api/userApi";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 const EditProfile = () => {
+  const [editProfile] = useEditProfileMutation();
+  const handleSubmit = async (values: FieldValues) => {
+    const toastId = toast.loading("processing...");
+    // try {
+    //   const res: any = await editProfile(tripData);
+    //   console.log(res);
+    //   if (res?.data?.id) {
+    //     toast.success("Trip created successfully", {
+    //       id: toastId,
+    //       duration: 1000,
+    //     });
+
+    //   } else {
+    //     toast.error("Something went wrong", { id: toastId, duration: 1000 });
+    //   }
+    // } catch (error: any) {
+    //   console.log(error?.message);
+    // }
+  };
+
   return (
     <Container>
       <Stack
@@ -39,7 +62,7 @@ const EditProfile = () => {
 
           <Box>
             <TBForm
-              onSubmit={() => console.log("golam")}
+              onSubmit={handleSubmit}
               // defaultValues={defaultValues}
             >
               <Grid container spacing={2} my={1}>

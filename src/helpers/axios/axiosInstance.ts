@@ -45,23 +45,24 @@ instance.interceptors.response.use(
     // console.log(error);
     const config = error.config;
     // console.log(config);
-    if (error?.response?.status === 500 && !config.sent) {
-      config.sent = true;
-      const response = await getNewAccessToken();
-      const accessToken = response?.data?.accessToken;
-      config.headers["Authorization"] = accessToken;
-      setToLocalStorage(authKey, accessToken);
-      setAccessToken(accessToken);
-      return instance(config);
-    } else {
-      const responseObject: IGenericErrorResponse = {
-        statusCode: error?.response?.data?.statusCode || 500,
-        message: error?.response?.data?.message || "Something went wrong!!!",
-        errorMessages: error?.response?.data?.message,
-      };
-      // return Promise.reject(error);
-      return responseObject;
-    }
+    // if (error?.response?.status === 500 && !config.sent) {
+    //   config.sent = true;
+    //   const response = await getNewAccessToken();
+    //   const accessToken = response?.data?.token;
+    //   config.headers["Authorization"] = accessToken;
+    //   setToLocalStorage(authKey, accessToken);
+    //   setAccessToken(accessToken);
+    //   return instance(config);
+    // }
+    // else {
+    //   const responseObject: IGenericErrorResponse = {
+    //     statusCode: error?.response?.data?.statusCode || 500,
+    //     message: error?.response?.data?.message || "Something went wrong!!!",
+    //     errorMessages: error?.response?.data?.message,
+    //   };
+    //   // return Promise.reject(error);
+    //   return responseObject;
+    // }
   }
 );
 

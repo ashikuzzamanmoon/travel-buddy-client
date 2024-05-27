@@ -72,6 +72,13 @@ const Navbar = () => {
                 </Typography>
                 <Typography
                   component={Link}
+                  href="/dashboard"
+                  onClick={handleMenuToggle}
+                >
+                  Dashboard
+                </Typography>
+                <Typography
+                  component={Link}
                   href="/about-us"
                   onClick={handleMenuToggle}
                 >
@@ -103,6 +110,9 @@ const Navbar = () => {
           >
             <Typography component={Link} href="/">
               Home
+            </Typography>
+            <Typography component={Link} href="/dashboard">
+              Dashboard
             </Typography>
             <Typography component={Link} href="/about-us">
               About Us

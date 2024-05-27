@@ -1,14 +1,20 @@
 "use client";
-import { Box, Button, IconButton, Pagination } from "@mui/material";
+import { Box, Button, IconButton, Pagination, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import PostTripModal from "./components/page";
+import {
+  useDeleteTripMutation,
+  useGetTripsByUserQuery,
+} from "@/redux/api/tripApi";
+import { toast } from "sonner";
 
 const PostTripPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+  const { data, isLoading } = useGetTripsByUserQuery({});
+  console.log(data);
   const query: Record<string, any> = {};
 
   const [page, setPage] = useState(1);
@@ -20,11 +26,30 @@ const PostTripPage = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+  const [deleteTrip] = useDeleteTripMutation();
+  const handleDelete = async (id: string) => {
+    const toastId = toast.loading("Processing...");
+    try {
+      const res: any = await deleteTrip({ tripId: id });
+      console.log(res);
+      if (res?.data?.id) {
+        toast.success("Trip deleted successfully", {
+          id: toastId,
+          duration: 1000,
+        });
+      } else {
+        toast.error("Something went wrong", { id: toastId, duration: 1000 });
+      }
+    } catch (error: any) {
+      console.log(error?.message);
+    }
+  };
 
   const columns: GridColDef[] = [
-    { field: "startDate", headerName: "Date", flex: 1 },
-    { field: "startTime", headerName: "Start Time", flex: 1 },
-    { field: "endTime", headerName: "End Time", flex: 1 },
+    { field: "destination", headerName: "Destination", flex: 1 },
+    { field: "startDate", headerName: "Start Date", flex: 1 },
+    { field: "endDate", headerName: "End Date", flex: 1 },
+    { field: "budget", headerName: "budget", flex: 1 },
     {
       field: "action",
       headerName: "Action",
@@ -33,7 +58,7 @@ const PostTripPage = () => {
       align: "center",
       renderCell: ({ row }) => {
         return (
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={() => handleDelete(row?.id)}>
             <DeleteIcon sx={{ color: "red" }} />
           </IconButton>
         );
@@ -54,12 +79,14 @@ const PostTripPage = () => {
       <Box sx={{ mb: 5 }}></Box>
 
       <Box>
-        {
+        {isLoading ? (
+          <Typography>Loading...</Typography>
+        ) : (
           <Box my={2}>
             <DataGrid
-              rows={[]}
+              rows={data || []}
               columns={columns}
-              hideFooterPagination
+              hideFooter
               slots={{
                 footer: () => {
                   return (
@@ -81,7 +108,7 @@ const PostTripPage = () => {
               }}
             />
           </Box>
-        }
+        )}
       </Box>
     </Box>
   );

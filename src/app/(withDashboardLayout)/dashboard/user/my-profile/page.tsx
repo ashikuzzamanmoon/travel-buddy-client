@@ -1,7 +1,10 @@
+"use client";
+import { useGetUserQuery } from "@/redux/api/userApi";
 import { Avatar, Button } from "@mui/material";
 import Link from "next/link";
 
 const MyProfile = () => {
+  const { data, isLoading } = useGetUserQuery({});
   return (
     <section className="pt-16 bg-blueGray-50">
       <div className="w-full lg:w-4/6 px-4 mx-auto">
@@ -52,17 +55,19 @@ const MyProfile = () => {
                   Edit Profile
                 </Button>
               </Link>
-              <Button variant="outlined" color="primary">
-                Change Password
-              </Button>
+              <Link href="/dashboard/user/my-profile/change-password">
+                <Button variant="outlined" color="primary">
+                  Change Password
+                </Button>
+              </Link>
             </div>
             <div className="text-center mt-12">
               <h3 className="text-xl font-semibold leading-normal mb-2 text-blueGray-700">
-                Jenna Stones
+                {isLoading ? "Loading..." : data?.name}
               </h3>
               <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                 <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                Los Angeles, California
+                {isLoading ? "Loading..." : data?.email}
               </div>
               <div className="mb-2 text-blueGray-600 mt-10">
                 <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
