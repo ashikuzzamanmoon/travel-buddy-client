@@ -36,7 +36,7 @@ const travelTips = [
 
 const TravelTipsAndGuides: React.FC = () => {
   return (
-    <Box py={5}>
+    <Box py={5} sx={{ backgroundColor: "#edf6ff" }}>
       <Typography variant="h3" component="h2" gutterBottom textAlign="center">
         Helpful Travel Tips and Guides
       </Typography>
