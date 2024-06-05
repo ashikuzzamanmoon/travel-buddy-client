@@ -29,7 +29,6 @@ const LoginPage = () => {
       if (res?.data?.token) {
         toast.success(res?.message);
         storeUserInfo({ token: res?.data?.token });
-        router.push("/dashboard");
       } else {
         setError(res.message);
       }
@@ -99,8 +98,8 @@ const LoginPage = () => {
               onSubmit={handleLogin}
               resolver={zodResolver(validationSchema)}
               defaultValues={{
-                email: "",
-                password: "",
+                email: "rafi@gmail.com",
+                password: "123456",
               }}
             >
               <Grid container spacing={2} my={1}>

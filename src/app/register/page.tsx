@@ -48,7 +48,7 @@ const RegisterPage = () => {
 
   const handleRegister = async (values: FieldValues) => {
     values.profile.age = Number(values.profile?.age);
-    console.log(values);
+    // console.log(values);
 
     try {
       const res = await registerUser(values);

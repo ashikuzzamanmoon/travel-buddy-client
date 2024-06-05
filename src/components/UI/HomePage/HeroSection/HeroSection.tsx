@@ -1,5 +1,6 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -49,12 +50,14 @@ const HeroSection = () => {
             discover new destinations, and make every journey unforgettable.
             Connect with travelers who share your passions.
           </Typography>
-          <Button
-            variant="outlined"
-            sx={{ alignSelf: ["center", "flex-start"] }}
-          >
-            Share Your Trip
-          </Button>
+          <Link href="/dashboard/user/post-trip">
+            <Button
+              variant="outlined"
+              sx={{ alignSelf: ["center", "flex-start"] }}
+            >
+              Share Your Trip
+            </Button>
+          </Link>
         </Container>
         <Container
           sx={{

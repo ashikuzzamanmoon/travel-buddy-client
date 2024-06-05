@@ -1,37 +1,22 @@
 "use client";
-import { Box, Button, IconButton, Pagination, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+
+import { useDeleteTripMutation, useGetAllTripQuery } from "@/redux/api/tripApi";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import PostTripModal from "./components/page";
-import {
-  useDeleteTripMutation,
-  useGetTripsByUserQuery,
-} from "@/redux/api/tripApi";
-import { toast } from "sonner";
+import { Avatar, Box, IconButton, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
 import Link from "next/link";
 import { dateFormate } from "@/utils/dateFormate";
 
-const PostTripPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { data, isLoading } = useGetTripsByUserQuery({});
-  // console.log({ data });
-  const query: Record<string, any> = {};
-
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(3);
-
-  query["page"] = page;
-  query["limit"] = limit;
-
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
+const ManageTripsPage = () => {
+  const { data: trips, isLoading } = useGetAllTripQuery({});
   const [deleteTrip] = useDeleteTripMutation();
+
   const handleDelete = async (id: string) => {
+    console.log(id);
     const toastId = toast.loading("Processing...");
     try {
       const res: any = await deleteTrip({ tripId: id });
@@ -48,7 +33,6 @@ const PostTripPage = () => {
       console.log(error?.message);
     }
   };
-
   const columns: GridColDef[] = [
     {
       field: "photo",
@@ -85,42 +69,31 @@ const PostTripPage = () => {
       renderCell: ({ row }) => {
         return (
           <Box>
+            <Link href={`/dashboard/edit-trip/${row?.id}`}>
+              <IconButton aria-label="delete">
+                <EditIcon sx={{ color: "green" }} />
+              </IconButton>
+            </Link>
             <IconButton
               aria-label="delete"
               onClick={() => handleDelete(row?.id)}
             >
               <DeleteIcon sx={{ color: "red" }} />
             </IconButton>
-            <Link href={`/dashboard/edit-trip/${row?.id}`}>
-              <IconButton aria-label="delete">
-                <EditIcon sx={{ color: "green" }} />
-              </IconButton>
-            </Link>
           </Box>
         );
       },
     },
   ];
-
   return (
-    <Box>
-      <Button
-        onClick={() => setIsModalOpen(true)}
-        endIcon={<AddIcon />}
-        sx={{ mt: 3.5 }}
-      >
-        Create Trip
-      </Button>
-      <PostTripModal open={isModalOpen} setOpen={setIsModalOpen} />
-      <Box sx={{ mb: 5 }}></Box>
-
+    <div>
       <Box>
         {isLoading ? (
           <Typography>Loading...</Typography>
         ) : (
           <Box my={2}>
             <DataGrid
-              rows={data || []}
+              rows={trips || []}
               columns={columns}
               hideFooter
               slots={{
@@ -132,13 +105,7 @@ const PostTripPage = () => {
                         display: "flex",
                         justifyContent: "center",
                       }}
-                    >
-                      <Pagination
-                        color="primary"
-                        page={page}
-                        onChange={handleChange}
-                      />
-                    </Box>
+                    ></Box>
                   );
                 },
               }}
@@ -146,8 +113,8 @@ const PostTripPage = () => {
           </Box>
         )}
       </Box>
-    </Box>
+    </div>
   );
 };
 
-export default PostTripPage;
+export default ManageTripsPage;

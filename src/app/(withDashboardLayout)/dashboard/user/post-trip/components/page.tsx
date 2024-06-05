@@ -1,9 +1,9 @@
 "use client";
+import TBDatePicker from "@/components/Forms/TBDatePicker";
 import TBFileUploader from "@/components/Forms/TBFileUploader";
 import TBForm from "@/components/Forms/TBForm";
 import TBInput from "@/components/Forms/TBInput";
 import TBSelectField from "@/components/Forms/TBSelectField";
-import TripDatePicker from "@/components/Forms/TripDatePicker";
 import TBModal from "@/components/Shared/TBModal/TBModal";
 import { TravelType } from "@/contants/travelType";
 import { useCreateTripMutation } from "@/redux/api/tripApi";
@@ -39,15 +39,18 @@ const PostTripModal: React.FC<PostTripModalProps> = ({ open, setOpen }) => {
     values.endDate = dateFormatter(values.endDate.$d);
     values.budget = Number(values?.budget);
     values.activities = [];
-    // console.log(values);
     const tripData = {
-      ...values,
-      file: imgUrl?.data?.url,
+      budget: values?.budget,
+      description: values?.description,
+      destination: values?.destination,
+      startDate: values?.startDate,
+      endDate: values?.endDate,
+      type: values?.travelType,
+      photo: imgUrl?.data?.url,
     };
-    console.log(tripData);
     try {
       const res: any = await createTrip(tripData);
-      console.log(res);
+      // console.log(res);
       if (res?.data?.id) {
         toast.success("Trip created successfully", {
           id: toastId,
@@ -72,10 +75,10 @@ const PostTripModal: React.FC<PostTripModalProps> = ({ open, setOpen }) => {
             <TBInput name="description" label="Detailed description" />
           </Grid>
           <Grid item md={6}>
-            <TripDatePicker name="startDate" label="StartDate" />
+            <TBDatePicker name="startDate" label="StartDate" />
           </Grid>
           <Grid item md={6}>
-            <TripDatePicker name="endDate" label="EndDate" />
+            <TBDatePicker name="endDate" label="EndDate" />
           </Grid>
           <Grid item md={6}>
             <TBSelectField

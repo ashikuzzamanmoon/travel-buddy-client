@@ -90,7 +90,7 @@ export default function DashboardDrawer({
                 component="div"
                 sx={{ color: "primary.main" }}
               >
-                Welcome to PH Health Care!
+                Welcome to Travel Buddy!
               </Typography>
             </Box>
             <Stack direction="row" gap={3}>
@@ -99,7 +99,7 @@ export default function DashboardDrawer({
                   <NotificationsNoneIcon color="action" />
                 </IconButton>
               </Badge>
-              <Avatar alt={data?.name} src={data?.profilePhoto} />
+              <Avatar alt={data?.name} src={data?.userProfile?.userPhoto} />
               <AccountMenu />
             </Stack>
           </Box>

@@ -15,17 +15,21 @@ import MenuIcon from "@mui/icons-material/Menu";
 import useUserInfo from "@/hooks/useUserInfo";
 import { logoutUser } from "@/services/actions/logoutUser";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const userInfo = useUserInfo();
-  console.log(userInfo);
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleLogOut = () => {
-    logoutUser(router);
+  const handleLogout = () => {
+    try {
+      logoutUser(router);
+      toast.success("logout successfully");
+    } catch (error: any) {
+      console.log(error?.message);
+    }
   };
 
   const handleMenuToggle = () => {
@@ -70,12 +74,21 @@ const Navbar = () => {
                 >
                   Home
                 </Typography>
+                {userInfo?.userId && (
+                  <Typography
+                    component={Link}
+                    href="/dashboard"
+                    onClick={handleMenuToggle}
+                  >
+                    Dashboard
+                  </Typography>
+                )}
                 <Typography
                   component={Link}
-                  href="/dashboard"
+                  href="/trips"
                   onClick={handleMenuToggle}
                 >
-                  Dashboard
+                  Trips
                 </Typography>
                 <Typography
                   component={Link}
@@ -84,13 +97,15 @@ const Navbar = () => {
                 >
                   About Us
                 </Typography>
-                <Typography
-                  component={Link}
-                  href="/my-profile"
-                  onClick={handleMenuToggle}
-                >
-                  My Profile
-                </Typography>
+                {userInfo?.userId && (
+                  <Typography
+                    component={Link}
+                    href={`/dashboard/${userInfo?.role}/my-profile`}
+                    onClick={handleMenuToggle}
+                  >
+                    My Profile
+                  </Typography>
+                )}
                 <Button
                   component={Link}
                   href="/login"
@@ -111,19 +126,29 @@ const Navbar = () => {
             <Typography component={Link} href="/">
               Home
             </Typography>
-            <Typography component={Link} href="/dashboard">
-              Dashboard
+            <Typography component={Link} href="/trips">
+              Trips
             </Typography>
+            {userInfo?.userId && (
+              <Typography component={Link} href="/dashboard">
+                Dashboard
+              </Typography>
+            )}
             <Typography component={Link} href="/about-us">
               About Us
             </Typography>
-            <Typography component={Link} href="/my-profile">
-              My Profile
-            </Typography>
+            {userInfo?.userId && (
+              <Typography
+                component={Link}
+                href={`/dashboard/${userInfo?.role}/my-profile`}
+              >
+                My Profile
+              </Typography>
+            )}
             {userInfo?.userId ? (
               <Button
                 color="error"
-                onClick={handleLogOut}
+                onClick={handleLogout}
                 sx={{ boxShadow: 0 }}
               >
                 Logout

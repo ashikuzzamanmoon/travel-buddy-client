@@ -14,7 +14,7 @@ interface IDatePicker {
   sx?: SxProps;
 }
 
-const PHDatePicker = ({
+const TBDatePicker = ({
   name,
   size = "small",
   label,
@@ -57,4 +57,4 @@ const PHDatePicker = ({
   );
 };
 
-export default PHDatePicker;
+export default TBDatePicker;

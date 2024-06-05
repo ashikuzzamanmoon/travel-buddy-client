@@ -34,4 +34,12 @@ export type IGenericErrorMessage = {
   message: string;
 };
 
+export type TUser = {
+  userId: string;
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+};
+
 export const Gender = ["MALE", "FEMALE"];

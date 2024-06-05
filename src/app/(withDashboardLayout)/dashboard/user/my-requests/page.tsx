@@ -1,43 +1,50 @@
 "use client";
-import { Box, Button, IconButton, Pagination, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import PostTripModal from "./components/page";
+
 import {
-  useDeleteTripMutation,
-  useGetTripsByUserQuery,
+  useGetRequestByUserQuery,
+  useResponseBuddyRequestMutation,
 } from "@/redux/api/tripApi";
 import { toast } from "sonner";
 import Image from "next/image";
 import Link from "next/link";
 import { dateFormate } from "@/utils/dateFormate";
 
-const PostTripPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { data, isLoading } = useGetTripsByUserQuery({});
-  // console.log({ data });
-  const query: Record<string, any> = {};
+const MyRequestsPage = () => {
+  const { data, isLoading } = useGetRequestByUserQuery({});
+  const [responseBuddyRequest] = useResponseBuddyRequestMutation();
+  const [updatedData, setUpdatedData] = useState([]);
 
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(3);
+  useEffect(() => {
+    const tripData = data?.map((trip: any) => {
+      return {
+        id: trip?.id,
+        status: trip?.status,
+        profilePhoto: trip?.user?.userProfile?.userPhoto,
+        userName: trip?.user?.name,
+        destination: trip?.trip?.destination,
+        startDate: trip?.trip?.startDate,
+        endDate: trip?.trip?.endDate,
+        budget: trip?.trip?.budget,
+        photo: trip?.trip?.photo,
+      };
+    });
+    setUpdatedData(tripData);
+  }, [data]);
 
-  query["page"] = page;
-  query["limit"] = limit;
-
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
-  const [deleteTrip] = useDeleteTripMutation();
-  const handleDelete = async (id: string) => {
+  const handleResponse = async (id: string, status: string) => {
     const toastId = toast.loading("Processing...");
+    const buddyData = {
+      id,
+      status,
+    };
     try {
-      const res: any = await deleteTrip({ tripId: id });
+      const res: any = await responseBuddyRequest(buddyData);
       console.log(res);
       if (res?.data?.id) {
-        toast.success("Trip deleted successfully", {
+        toast.success("Request  response successfully", {
           id: toastId,
           duration: 1000,
         });
@@ -76,6 +83,7 @@ const PostTripPage = () => {
       valueGetter: ({ value }) => dateFormate(value),
     },
     { field: "budget", headerName: "budget", flex: 1 },
+    { field: "status", headerName: "status", flex: 1 },
     {
       field: "action",
       headerName: "Action",
@@ -85,17 +93,21 @@ const PostTripPage = () => {
       renderCell: ({ row }) => {
         return (
           <Box>
-            <IconButton
-              aria-label="delete"
-              onClick={() => handleDelete(row?.id)}
-            >
-              <DeleteIcon sx={{ color: "red" }} />
-            </IconButton>
-            <Link href={`/dashboard/edit-trip/${row?.id}`}>
-              <IconButton aria-label="delete">
-                <EditIcon sx={{ color: "green" }} />
+            {row?.status === "PENDING" ? (
+              <IconButton
+                aria-label="delete"
+                onClick={() => handleResponse(row?.id, "APPROVED")}
+              >
+                <button className="btn btn-sm">Accept</button>
               </IconButton>
-            </Link>
+            ) : (
+              <IconButton
+                aria-label="delete"
+                onClick={() => handleResponse(row?.id, "PENDING")}
+              >
+                <button className="btn btn-sm">Reject</button>
+              </IconButton>
+            )}
           </Box>
         );
       },
@@ -104,23 +116,13 @@ const PostTripPage = () => {
 
   return (
     <Box>
-      <Button
-        onClick={() => setIsModalOpen(true)}
-        endIcon={<AddIcon />}
-        sx={{ mt: 3.5 }}
-      >
-        Create Trip
-      </Button>
-      <PostTripModal open={isModalOpen} setOpen={setIsModalOpen} />
-      <Box sx={{ mb: 5 }}></Box>
-
       <Box>
         {isLoading ? (
           <Typography>Loading...</Typography>
         ) : (
           <Box my={2}>
             <DataGrid
-              rows={data || []}
+              rows={updatedData || []}
               columns={columns}
               hideFooter
               slots={{
@@ -132,13 +134,7 @@ const PostTripPage = () => {
                         display: "flex",
                         justifyContent: "center",
                       }}
-                    >
-                      <Pagination
-                        color="primary"
-                        page={page}
-                        onChange={handleChange}
-                      />
-                    </Box>
+                    ></Box>
                   );
                 },
               }}
@@ -150,4 +146,4 @@ const PostTripPage = () => {
   );
 };
 
-export default PostTripPage;
+export default MyRequestsPage;

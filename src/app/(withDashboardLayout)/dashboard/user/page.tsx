@@ -1,109 +1,140 @@
-import React from "react";
-
+"use client";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
+import {
+  useGetAllTripQuery,
+  useGetRequestByUserQuery,
+  useGetTripsByUserQuery,
+} from "@/redux/api/tripApi";
+import { dateFormate } from "@/utils/dateFormate";
+import { Box, Button, Typography } from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
+import { useGetAllUserQuery } from "@/redux/api/userApi";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 const UserDashboard = () => {
+  const router = useRouter();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const lastVisit = sessionStorage.getItem("lastVisit");
+      const currentTime = new Date().getTime();
+      if (!lastVisit || currentTime - parseInt(lastVisit, 10) > 5000) {
+        sessionStorage.setItem("lastVisit", currentTime.toString());
+        window.location.reload();
+      }
+    }
+  }, []);
+  const { data, isLoading } = useGetTripsByUserQuery({});
+  const { data: allTrips, isLoading: tripsLoading } = useGetAllTripQuery({});
+  const { data: users, isLoading: usersLoading } = useGetAllUserQuery({});
+  const { data: requests } = useGetRequestByUserQuery({});
+  const trips = data?.slice(0, 4);
+
+  const columns: GridColDef[] = [
+    {
+      field: "photo",
+      headerName: "Photo",
+      flex: 1,
+      renderCell: ({ row }) => {
+        return (
+          <Box>
+            <Image src={row?.photo} width={100} height={100} alt="photo" />
+          </Box>
+        );
+      },
+    },
+    { field: "destination", headerName: "Destination", flex: 1 },
+    {
+      field: "startDate",
+      headerName: "Start Date",
+      flex: 1,
+      valueGetter: ({ value }) => dateFormate(value),
+    },
+    {
+      field: "endDate",
+      headerName: "End Date",
+      flex: 1,
+      valueGetter: ({ value }) => dateFormate(value),
+    },
+    { field: "budget", headerName: "budget", flex: 1 },
+  ];
   return (
-    <div className="flex flex-col h-screen">
-      {/* Main Content */}
-      <main className="flex-1 p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Card 1 */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4">Total Sales</h2>
-            <p className="text-3xl font-bold text-blue-500">$244</p>
-          </div>
-          {/* Card 2 */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4">Total Cost</h2>
-            <p className="text-3xl font-bold text-green-500">$199.4</p>
-          </div>
-          {/* Card 3 */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4">Total Users</h2>
-            <p className="text-3xl font-bold text-yellow-500">900</p>
-          </div>
-          {/* Card 4 */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold mb-4">Total Products</h2>
-            <p className="text-3xl font-bold text-red-500">500</p>
-          </div>
+    <div>
+      {isLoading || usersLoading || tripsLoading ? (
+        <Typography>Loading...</Typography>
+      ) : (
+        <div className="flex flex-col ">
+          {/* Main Content */}
+          <main className="flex-1 p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Card 1 */}
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-lg font-semibold mb-4">My Trips</h2>
+                <p className="text-3xl font-bold text-blue-500">
+                  {data?.length}
+                </p>
+              </div>
+              {/* Card 2 */}
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-lg font-semibold mb-4">Total Trips</h2>
+                <p className="text-3xl font-bold text-green-500">
+                  {allTrips?.length}
+                </p>
+              </div>
+              {/* Card 3 */}
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-lg font-semibold mb-4">Total Users</h2>
+                <p className="text-3xl font-bold text-yellow-500">
+                  {users?.length}
+                </p>
+              </div>
+              {/* Card 4 */}
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-lg font-semibold mb-4">My Requests</h2>
+                <p className="text-3xl font-bold text-red-500">
+                  {requests?.length}
+                </p>
+              </div>
+            </div>
+          </main>
+          {/* Table */}
+
+          <Box>
+            {isLoading ? (
+              <Typography>Loading...</Typography>
+            ) : (
+              <Box my={2}>
+                <DataGrid
+                  rows={trips || []}
+                  columns={columns}
+                  hideFooter
+                  slots={{
+                    footer: () => {
+                      return (
+                        <Box
+                          sx={{
+                            mb: 2,
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
+                        ></Box>
+                      );
+                    },
+                  }}
+                />
+              </Box>
+            )}
+            <div className="flex justify-center items-center">
+              <Link href="/dashboard/user/post-trip">
+                <button className="btn btn-sm btn-outline">See All</button>
+              </Link>
+            </div>
+          </Box>
         </div>
-      </main>
-      {/* Table */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Recent Orders</h2>
-        <table className="w-full border-collapse">
-          <thead>
-            <tr>
-              <th className="text-left border-b-2 border-gray-300 py-2">
-                Order ID
-              </th>
-              <th className="text-left border-b-2 border-gray-300 py-2">
-                Customer
-              </th>
-              <th className="text-left border-b-2 border-gray-300 py-2">
-                Date
-              </th>
-              <th className="text-left border-b-2 border-gray-300 py-2">
-                Amount
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="border-b border-gray-300 py-2">123456</td>
-              <td className="border-b border-gray-300 py-2">John Doe</td>
-              <td className="border-b border-gray-300 py-2">2024-05-25</td>
-              <td className="border-b border-gray-300 py-2">$150</td>
-            </tr>
-            <tr>
-              <td className="border-b border-gray-300 py-2">123457</td>
-              <td className="border-b border-gray-300 py-2">Jane Smith</td>
-              <td className="border-b border-gray-300 py-2">2024-05-24</td>
-              <td className="border-b border-gray-300 py-2">$200</td>
-            </tr>
-            <tr>
-              <td className="border-b border-gray-300 py-2">123458</td>
-              <td className="border-b border-gray-300 py-2">Mike Johnson</td>
-              <td className="border-b border-gray-300 py-2">2024-05-23</td>
-              <td className="border-b border-gray-300 py-2">$180</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {/* Bar Chart */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Sales by Month</h2>
-        <div className="flex items-center">
-          <div className="w-16 text-gray-500 mr-4">January</div>
-          <div className="flex-1 bg-gray-200 h-8 rounded-lg">
-            <div
-              className="bg-blue-500 h-full rounded-lg"
-              style={{ width: "40%" }}
-            ></div>
-          </div>
-          <div className="ml-4 text-gray-700">40%</div>
-        </div>
-        <div className="flex items-center mt-4">
-          <div className="w-16 text-gray-500 mr-4">February</div>
-          <div className="flex-1 bg-gray-200 h-8 rounded-lg">
-            <div
-              className="bg-blue-500 h-full rounded-lg"
-              style={{ width: "60%" }}
-            ></div>
-          </div>
-          <div className="ml-4 text-gray-700">60%</div>
-        </div>
-        <div className="flex items-center mt-4">
-          <div className="w-16 text-gray-500 mr-4">March</div>
-          <div className="flex-1 bg-gray-200 h-8 rounded-lg">
-            <div
-              className="bg-blue-500 h-full rounded-lg"
-              style={{ width: "80%" }}
-            ></div>
-          </div>
-          <div className="ml-4 text-gray-700">80%</div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
