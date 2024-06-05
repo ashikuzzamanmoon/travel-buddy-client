@@ -97,10 +97,6 @@ const LoginPage = () => {
             <TBForm
               onSubmit={handleLogin}
               resolver={zodResolver(validationSchema)}
-              defaultValues={{
-                email: "rafi@gmail.com",
-                password: "123456",
-              }}
             >
               <Grid container spacing={2} my={1}>
                 <Grid item md={6}>
