@@ -25,7 +25,7 @@ const AdminProfile = () => {
                           src={
                             user?.userProfile?.userPhoto
                               ? user?.userProfile?.userPhoto
-                              : "https://img.freepik.com/free-photo/cheerful-indian-businessman-smiling-closeup-portrait-jobs-career-campaign_53876-129417.jpg?t=st=1716643928~exp=1716647528~hmac=86efbc87f4d7888a035a81c3627036992868986f60613d8153acb1e444e85d3f&w=740"
+                              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnDNmpgYnTP4ELmIob69uKE1O0Rbrotna00g&s"
                           }
                           sx={{
                             width: 150,
@@ -92,11 +92,11 @@ const AdminProfile = () => {
                     </div>
                     <div className="mb-2 text-blueGray-600 mt-10">
                       <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                      Solution Manager - Creative Tim Officer
+                      Age: {user?.userProfile?.age}
                     </div>
                     <div className="mb-2 text-blueGray-600">
                       <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                      University of Computer Science
+                      Bio: {user?.userProfile?.bio}
                     </div>
                   </div>
                   <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
@@ -109,12 +109,6 @@ const AdminProfile = () => {
                           giving it a warm, intimate feel with a solid groove
                           structure. An artist of considerable range.
                         </p>
-                        <a
-                          href="javascript:void(0);"
-                          className="font-normal text-pink-500"
-                        >
-                          Show more
-                        </a>
                       </div>
                     </div>
                   </div>

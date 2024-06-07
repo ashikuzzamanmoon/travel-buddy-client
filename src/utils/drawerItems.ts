@@ -58,6 +58,11 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
           icon: RequestQuoteIcon,
         },
         {
+          title: "Request History",
+          path: `${role}/request-history`,
+          icon: RequestQuoteIcon,
+        },
+        {
           title: "My Profile",
           path: `${role}/my-profile`,
           icon: PortraitIcon,

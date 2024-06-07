@@ -46,6 +46,7 @@ const TripDetailsPage = ({ params }: { params: { tripId: string } }) => {
           alt="Paella dish"
         />
         <CardContent>
+          <p>Description : {trip?.description}</p>
           <p>Destination : {trip?.destination}</p>
           <p>Budget : {trip?.budget}</p>
           <p>StartDate : {dateFormate(trip?.startDate)}</p>

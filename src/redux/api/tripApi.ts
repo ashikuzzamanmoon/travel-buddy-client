@@ -94,6 +94,15 @@ export const tripApi = baseApi.injectEndpoints({
       },
       providesTags: [tagTypes.travelBuddy],
     }),
+    getRequestHistoryByUser: builder.query({
+      query: () => {
+        return {
+          url: "/request-history",
+          method: "GET",
+        };
+      },
+      providesTags: [tagTypes.travelBuddy],
+    }),
   }),
 });
 
@@ -109,4 +118,5 @@ export const {
   useGetTripByIdQuery,
   useGetRequestByUserQuery,
   useResponseBuddyRequestMutation,
+  useGetRequestHistoryByUserQuery,
 } = tripApi;

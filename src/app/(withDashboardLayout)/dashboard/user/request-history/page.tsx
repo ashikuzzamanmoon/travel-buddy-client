@@ -2,20 +2,13 @@
 import { Avatar, Box, IconButton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-
-import {
-  useGetRequestByUserQuery,
-  useResponseBuddyRequestMutation,
-} from "@/redux/api/tripApi";
-import { toast } from "sonner";
 import Image from "next/image";
-import Link from "next/link";
 import { dateFormate } from "@/utils/dateFormate";
+import { useGetRequestHistoryByUserQuery } from "@/redux/api/tripApi";
 
-const MyRequestsPage = () => {
-  const { data, isLoading } = useGetRequestByUserQuery({});
+const RequestHistoryPage = () => {
+  const { data, isLoading } = useGetRequestHistoryByUserQuery({});
   console.log(data);
-  const [responseBuddyRequest] = useResponseBuddyRequestMutation();
   const [updatedData, setUpdatedData] = useState([]);
 
   useEffect(() => {
@@ -30,34 +23,34 @@ const MyRequestsPage = () => {
         endDate: trip?.trip?.endDate,
         budget: trip?.trip?.budget,
         photo: trip?.trip?.photo,
-        senderPhoto: trip?.sender?.userProfile?.userPhoto,
-        senderName: trip?.sender?.name,
+        senderPhoto: trip?.user?.userProfile?.userPhoto,
+        senderName: trip?.user?.name,
       };
     });
     setUpdatedData(tripData);
   }, [data]);
 
-  const handleResponse = async (id: string, status: string) => {
-    const toastId = toast.loading("Processing...");
-    const buddyData = {
-      id,
-      status,
-    };
-    try {
-      const res: any = await responseBuddyRequest(buddyData);
-      console.log(res);
-      if (res?.data?.id) {
-        toast.success("Request  response successfully", {
-          id: toastId,
-          duration: 1000,
-        });
-      } else {
-        toast.error("Something went wrong", { id: toastId, duration: 1000 });
-      }
-    } catch (error: any) {
-      console.log(error?.message);
-    }
-  };
+  //   const handleResponse = async (id: string, status: string) => {
+  //     const toastId = toast.loading("Processing...");
+  //     const buddyData = {
+  //       id,
+  //       status,
+  //     };
+  //     try {
+  //       const res: any = await responseBuddyRequest(buddyData);
+  //       console.log(res);
+  //       if (res?.data?.id) {
+  //         toast.success("Request  response successfully", {
+  //           id: toastId,
+  //           duration: 1000,
+  //         });
+  //       } else {
+  //         toast.error("Something went wrong", { id: toastId, duration: 1000 });
+  //       }
+  //     } catch (error: any) {
+  //       console.log(error?.message);
+  //     }
+  //   };
 
   const columns: GridColDef[] = [
     {
@@ -81,7 +74,6 @@ const MyRequestsPage = () => {
         );
       },
     },
-
     { field: "destination", headerName: "Destination", flex: 1 },
     {
       field: "startDate",
@@ -97,34 +89,34 @@ const MyRequestsPage = () => {
     },
     { field: "budget", headerName: "budget", flex: 1 },
     { field: "status", headerName: "status", flex: 1 },
-    {
-      field: "action",
-      headerName: "Action",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: ({ row }) => {
-        return (
-          <Box>
-            {row?.status === "PENDING" ? (
-              <IconButton
-                aria-label="delete"
-                onClick={() => handleResponse(row?.id, "APPROVED")}
-              >
-                <button className="btn btn-sm">Accept</button>
-              </IconButton>
-            ) : (
-              <IconButton
-                aria-label="delete"
-                onClick={() => handleResponse(row?.id, "PENDING")}
-              >
-                <button className="btn btn-sm">Reject</button>
-              </IconButton>
-            )}
-          </Box>
-        );
-      },
-    },
+    // {
+    //   field: "action",
+    //   headerName: "Action",
+    //   flex: 1,
+    //   headerAlign: "center",
+    //   align: "center",
+    //   renderCell: ({ row }) => {
+    //     return (
+    //       <Box>
+    //         {row?.status === "PENDING" ? (
+    //           <IconButton
+    //             aria-label="delete"
+    //             onClick={() => handleResponse(row?.id, "APPROVED")}
+    //           >
+    //             <button className="btn btn-sm">Accept</button>
+    //           </IconButton>
+    //         ) : (
+    //           <IconButton
+    //             aria-label="delete"
+    //             onClick={() => handleResponse(row?.id, "PENDING")}
+    //           >
+    //             <button className="btn btn-sm">Reject</button>
+    //           </IconButton>
+    //         )}
+    //       </Box>
+    //     );
+    //   },
+    // },
   ];
 
   return (
@@ -159,4 +151,4 @@ const MyRequestsPage = () => {
   );
 };
 
-export default MyRequestsPage;
+export default RequestHistoryPage;

@@ -16,9 +16,14 @@ import useUserInfo from "@/hooks/useUserInfo";
 import { logoutUser } from "@/services/actions/logoutUser";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import dynamic from "next/dynamic";
 
 const Navbar = () => {
   const userInfo = useUserInfo();
+  const AuthButton = dynamic(
+    () => import("@/components/UI/HomePage/AuthButton/AuthButton"),
+    { ssr: false }
+  );
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -77,7 +82,7 @@ const Navbar = () => {
                 {userInfo?.userId && (
                   <Typography
                     component={Link}
-                    href="/dashboard"
+                    href={`/dashboard/${userInfo?.role}`}
                     onClick={handleMenuToggle}
                   >
                     Dashboard
@@ -130,7 +135,10 @@ const Navbar = () => {
               Trips
             </Typography>
             {userInfo?.userId && (
-              <Typography component={Link} href="/dashboard">
+              <Typography
+                component={Link}
+                href={`/dashboard/${userInfo?.role}`}
+              >
                 Dashboard
               </Typography>
             )}
@@ -145,19 +153,7 @@ const Navbar = () => {
                 My Profile
               </Typography>
             )}
-            {userInfo?.userId ? (
-              <Button
-                color="error"
-                onClick={handleLogout}
-                sx={{ boxShadow: 0 }}
-              >
-                Logout
-              </Button>
-            ) : (
-              <Button component={Link} href="/login">
-                Login
-              </Button>
-            )}
+            <AuthButton />
           </Stack>
         )}
       </Stack>

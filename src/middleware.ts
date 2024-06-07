@@ -20,7 +20,10 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  if (accessToken && commonRoute.includes(pathname)) {
+  if (
+    (accessToken && commonRoute.includes(pathname)) ||
+    pathname.match(/^\/dashboard\/edit-trip\/([^\/]+)$/)
+  ) {
     return NextResponse.next();
   }
   let decode = null;
