@@ -16,56 +16,25 @@ import Link from "next/link";
 import { Box, Button, Container, TextField } from "@mui/material";
 import { dateFormate } from "@/utils/dateFormate";
 import { useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
 const TripsPage = () => {
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState("");
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
   if (searchTerm) {
     query["searchTerm"] = searchTerm;
   }
-  if (startDate) {
-    query["startDate"] = startDate;
-  }
-  if (endDate) {
-    query["endDate"] = endDate;
-  }
+
   console.log({ query });
   const { data: trips, isLoading } = useGetAllTripQuery({ ...query });
 
   return (
     <div className="mx-10 mb-7">
       <h1 className="text-3xl font-bold my-3">All Trips</h1>
-      <div className="flex  justify-between">
+      <div className="flex  justify-start">
         <TextField
           size="small"
           onChange={(e) => setSearchTerm(e.target.value)}
           label="Search"
         />
-
-        <div className="md:my-0 my-3">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DesktopDatePicker
-              timezone="system"
-              label="Start Date"
-              value={startDate}
-              onChange={(newValue: Dayjs | null) => setStartDate(newValue)}
-            />
-          </LocalizationProvider>
-        </div>
-
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DesktopDatePicker
-            timezone="system"
-            label="End Date"
-            value={endDate}
-            onChange={(newValue: Dayjs | null) => setEndDate(newValue)}
-          />
-        </LocalizationProvider>
       </div>
 
       <Box>

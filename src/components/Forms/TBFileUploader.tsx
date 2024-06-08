@@ -9,18 +9,24 @@ export default function TBFileUploader({
   name,
   label,
   sx,
+  required,
 }: {
   name: string;
   label: string;
   sx?: SxProps;
+  required?: boolean;
 }) {
   const { control } = useFormContext();
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field: { onChange, value, ...field } }) => {
-        return (
+      rules={{ required: required && "Photo is required" }}
+      render={({
+        field: { onChange, value, ...field },
+        fieldState: { error },
+      }) => (
+        <>
           <Button
             component="label"
             role={undefined}
@@ -29,19 +35,21 @@ export default function TBFileUploader({
             sx={{ ...sx }}
             startIcon={<CloudUploadIcon />}
           >
-            Upload file
+            {label}
             <Input
               {...field}
-              type={name}
-              value={value?.fileName}
+              type="file"
               onChange={(e) =>
-                onChange((e?.target as HTMLInputElement)?.files?.[0])
+                onChange((e.target as HTMLInputElement).files?.[0] || null)
               }
               style={{ display: "none" }}
             />
           </Button>
-        );
-      }}
+          {required && error && (
+            <p style={{ color: "red", marginTop: 5 }}>{error.message}</p>
+          )}
+        </>
+      )}
     />
   );
 }

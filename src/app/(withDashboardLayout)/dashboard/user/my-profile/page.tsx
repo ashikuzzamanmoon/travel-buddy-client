@@ -22,7 +22,7 @@ const MyProfile = () => {
                         src={
                           user?.userProfile?.userPhoto
                             ? user?.userProfile?.userPhoto
-                            : "https://img.freepik.com/free-photo/cheerful-indian-businessman-smiling-closeup-portrait-jobs-career-campaign_53876-129417.jpg?t=st=1716643928~exp=1716647528~hmac=86efbc87f4d7888a035a81c3627036992868986f60613d8153acb1e444e85d3f&w=740"
+                            : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
                         }
                         sx={{
                           width: 150,
@@ -96,11 +96,10 @@ const MyProfile = () => {
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full lg:w-9/12 px-4">
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
+                        Exploring the world, one passport stamp at a time.
+                        Capturing sunsets, tasting local cuisine, and making
+                        memories in every corner of the globe. Adventure seeker,
+                        wanderer, and storyteller. Join me on this journey!
                       </p>
                     </div>
                   </div>

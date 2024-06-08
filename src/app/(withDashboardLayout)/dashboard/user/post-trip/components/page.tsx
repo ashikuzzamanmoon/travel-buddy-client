@@ -69,19 +69,24 @@ const PostTripModal: React.FC<PostTripModalProps> = ({ open, setOpen }) => {
       <TBForm onSubmit={handleSubmit}>
         <Grid container spacing={2} sx={{ width: "400px" }}>
           <Grid item md={6}>
-            <TBInput name="destination" label="Destination" />
+            <TBInput required={true} name="destination" label="Destination" />
           </Grid>
           <Grid item md={6} sx={{ width: "100%" }}>
-            <TBInput name="description" label="Detailed description" />
+            <TBInput
+              required={true}
+              name="description"
+              label="Detailed description"
+            />
           </Grid>
           <Grid item md={6}>
-            <TBDatePicker name="startDate" label="StartDate" />
+            <TBDatePicker required={true} name="startDate" label="StartDate" />
           </Grid>
           <Grid item md={6}>
-            <TBDatePicker name="endDate" label="EndDate" />
+            <TBDatePicker required={true} name="endDate" label="EndDate" />
           </Grid>
           <Grid item md={6}>
             <TBSelectField
+              required={true}
               name="travelType"
               label="Travel type"
               items={TravelType}
@@ -89,11 +94,17 @@ const PostTripModal: React.FC<PostTripModalProps> = ({ open, setOpen }) => {
             />
           </Grid>
           <Grid item md={6}>
-            <TBInput name="budget" label="Budget" type="number" />
+            <TBInput
+              required={true}
+              name="budget"
+              label="Budget"
+              type="number"
+            />
           </Grid>
 
           <Grid item md={6}>
             <TBFileUploader
+              required={true}
               name="file"
               label="Upload Photo"
               sx={{ width: "100%" }}

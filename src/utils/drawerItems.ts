@@ -4,8 +4,9 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import RequestPageIcon from "@mui/icons-material/RequestPage";
 import PortraitIcon from "@mui/icons-material/Portrait";
 import CommuteIcon from "@mui/icons-material/Commute";
-import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 export const drawerItems = (role: UserRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
 
@@ -55,12 +56,12 @@ export const drawerItems = (role: UserRole): DrawerItem[] => {
         {
           title: "My Request",
           path: `${role}/my-requests`,
-          icon: RequestQuoteIcon,
+          icon: ManageHistoryIcon,
         },
         {
           title: "Request History",
           path: `${role}/request-history`,
-          icon: RequestQuoteIcon,
+          icon: WorkHistoryIcon,
         },
         {
           title: "My Profile",

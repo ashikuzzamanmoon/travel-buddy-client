@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Travel Buddy
+
+## Live URL
+
+[https://travel-buddy-client-ten.vercel.app](https://travel-buddy-client-ten.vercel.app)
+
+## Video Description
+
+[https://drive.google.com/file/d/1mRKhAiY4dXn1MA_Ret2opxm8JzmpJYB7/view?usp=sharing](https://drive.google.com/file/d/1mRKhAiY4dXn1MA_Ret2opxm8JzmpJYB7/view?usp=sharing)
+
+## Overview
+
+Travel Buddy Matching App is a web application designed to help users plan and organize their trips efficiently. Whether you're traveling solo or with friends, Travel Buddy App provides features to manage your trips, find potential travel buddies, and update your user profile seamlessly.
+
+## Features
+
+- **Trip Management**: Create, view, and manage your trips with ease.
+- **Travel Buddy Requests**: Send and receive travel buddy requests to join or invite others to your trips.
+- **User Profile**: Update user profile status and Maintain your user profile to share information about yourself with other users.
+- **Search and Filter**: Find trips and potential travel buddies based on destination, dates, budget, and more.
+
+## Technology Used
+
+- **Programming Language**: TypeScript
+- **Web Framework**: Express.js
+- **Database**: Railway Database PostgreSQL with Prisma ORM
+- **Authentication**: JSON Web Tokens (JWT)
+- **Validation**: Zod for schema validation
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+To set up the Travel Buddy App locally, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. **Clone the Repository**
+2. **Install Dependencies**: `cd travel-buddy-app && npm install`
+3. **Set Up Environment Variables**: Create a `.env` file based on the provided `.env.example` file and fill in the necessary configuration.
+4. **Run Migrations**: `npx prisma migrate dev` to apply database migrations.
+5. **Start the Server**: `npm start` to run the backend server.
+6. **Access the App**: Visit `http://localhost:3000` in your browser to access the Travel Buddy App.

@@ -26,8 +26,8 @@ const EditTrip = ({ params }: { params: { tripId: string } }) => {
   console.log(trip);
   const defaultValues = {
     destination: trip?.destination,
-    // startDate: trip?.startDate,
-    // endDate: trip?.endDate,
+    startDate: trip?.startDate,
+    endDate: trip?.endDate,
     photo: trip?.photo,
     budget: trip?.budget,
     type: trip?.type,

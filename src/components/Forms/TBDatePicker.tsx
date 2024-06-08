@@ -27,7 +27,7 @@ const TBDatePicker = ({
     <Controller
       name={name}
       control={control}
-      defaultValue={dayjs(new Date().toDateString())}
+      defaultValue={dayjs()}
       render={({ field: { onChange, value, ...field } }) => {
         return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -37,7 +37,7 @@ const TBDatePicker = ({
               disablePast
               {...field}
               onChange={(date) => onChange(date)}
-              value={value || Date.now()}
+              value={value ? dayjs(value) : null}
               slotProps={{
                 textField: {
                   required: required,
